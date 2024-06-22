@@ -31,7 +31,7 @@ model = AutoModelForCausalLM.from_pretrained(
 def LLM(input_msg):
     messages = [
         {"role": "system", "content": "You are a helpful assistant who always speaks English."},
-        {"role": "user", "content": input_msg},
+        {"role": "user", "content": f"{input_msg}"},
     ]
     
     input_ids = tokenizer.apply_chat_template(
