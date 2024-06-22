@@ -88,7 +88,7 @@ def transcribe_and_speak(audio):
 interface = gr.Interface(
     fn=transcribe_and_speak,
     inputs=gr.Audio(type="filepath"),
-    outputs=["text", gr.Audio(type="file")],
+    outputs=["text", gr.Audio(type="filepath")],
 )
 
 interface.launch(server_name="0.0.0.0", server_port=8000, debug=True)
