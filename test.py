@@ -54,7 +54,8 @@ def LLM(input_msg):
         top_p=0.9,
     )
     response = outputs[0][input_ids.shape[-1]:]
-    return tokenizer.decode(response, skip_special_tokens=True)
+    result = tokenizer.decode(response, skip_special_tokens=True)
+    return result
 
 setting.set_api_key('ejjItkAMCvhD4Hr2U39B6INZt6nO5mlh')
 
