@@ -15,10 +15,12 @@ pipe = pipeline(
 )
 
 def ASR (intput_path):
+    print(f"ASR Input: {intput_path}")
     # Perform ASR with the created pipe.
     lang = "en"
-    result = pipe(intput_path, generate_kwargs={"language": lang, "task": "transcribe"}, batch_size=16)
-    return result["text"]
+    result = pipe(intput_path, generate_kwargs={"language": lang, "task": "transcribe"}, batch_size=16)["text"]
+    print(f"ASR Result: {result}")
+    return result
 
 
 model_id = "scb10x/llama-3-typhoon-v1.5x-8b-instruct"
@@ -69,13 +71,13 @@ def TTS (input_msg):
 def transcribe_and_speak(audio):
     try:
         transcription = ASR(audio) #เสียงเป็นข้อความ
-        print(f"Transcription: {transcription}")
+        # print(f"Transcription: {transcription}")
         
         llm_output = LLM(transcription) #ข้อความเป็นคําตอบ
-        print(f"LLM Output: {llm_output}")
+        # print(f"LLM Output: {llm_output}")
         
         tts_output = TTS(llm_output) #คําตอบเป็นเสียง
-        print(f"TTS Output: {tts_output}")
+        # print(f"TTS Output: {tts_output}")
 
         audio_path = "output.wav"
         with open(audio_path, "wb") as f:
@@ -92,4 +94,4 @@ interface = gr.Interface(
     outputs=["text", "audio"],
 )
 
-interface.launch(server_name="0.0.0.0",server_port=8000)
+interface.launch(server_name="0.0.0.0",server_port=8000 , debug=True)
