@@ -58,7 +58,7 @@ setting.set_api_key('ejjItkAMCvhD4Hr2U39B6INZt6nO5mlh')
 
 def TTS(input_msg):
     tts.convert(input_msg, './output.wav')
-    return "output.wav"
+    return "./output.wav"
 
 def transcribe_and_speak(audio):
     try:
@@ -88,7 +88,7 @@ def transcribe_and_speak(audio):
 interface = gr.Interface(
     fn=transcribe_and_speak,
     inputs=gr.Audio(type="filepath"),
-    outputs=["text", gr.Audio(type="filepath")],
+    outputs=["text", gr.Audio(type="file")],
 )
 
 interface.launch(server_name="0.0.0.0", server_port=8000, debug=True)
