@@ -14,10 +14,10 @@ pipe = pipeline(
     device=device,
 )
 
-def ASR(input_path):
+def ASR (intput_path):
     # Perform ASR with the created pipe.
     lang = "en"
-    result = pipe(input_path, generate_kwargs={"language": lang, "task": "transcribe"}, batch_size=16)["text"]
+    result = pipe(intput_path, generate_kwargs={"language": lang, "task": "transcribe"}, batch_size=16)["text"]
     return result
 
 model_id = "scb10x/llama-3-typhoon-v1.5x-8b-instruct"
@@ -28,10 +28,12 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map="auto",
 )
 
-def LLM(input_msg):
+
+def LLM (input_msg):
+    
     messages = [
-        {"role": "system", "content": "You are a helpful assistant who always speaks English."},
-        {"role": "user", "content": input_msg},
+        {"role": "system", "content": "You are a helpful assistant who're always speak Eng."},
+        {"role": "user", "content": f"{input_msg}"},
     ]
     
     input_ids = tokenizer.apply_chat_template(
@@ -42,7 +44,7 @@ def LLM(input_msg):
 
     terminators = [
         tokenizer.eos_token_id,
-        tokenizer.convert_tokens_to_ids("")
+        tokenizer.convert_tokens_to_ids("<|eot_id|>")
     ]
 
     outputs = model.generate(
@@ -58,16 +60,28 @@ def LLM(input_msg):
 
 setting.set_api_key('ejjItkAMCvhD4Hr2U39B6INZt6nO5mlh')
 
-def TTS(input_msg):
+def TTS (input_msg):
     tts.convert(input_msg, './output.wav')
     return "output.wav"
 
+
 def transcribe_and_speak(audio):
+
     try:
-        transcription = ASR(audio)  # Convert speech to text
-        llm_output = LLM(transcription)  # Get response from language model
-        tts_output = TTS(llm_output)  # Convert response to speech
-        return transcription, tts_output
+        transcription = ASR(audio) #เสียงเป็นข้อความ
+        # print(f"Transcription: {transcription}")
+        
+        llm_output = LLM(transcription) #ข้อความเป็นคําตอบ
+        # print(f"LLM Output: {llm_output}")
+        
+        tts_output = TTS(llm_output) #คําตอบเป็นเสียง
+        # print(f"TTS Output: {tts_output}")
+
+        audio_path = "output.wav"
+        with open(audio_path, "wb") as f:
+            f.write(tts_output["audio"])
+        
+        return transcription, audio_path
     except Exception as e:
         print(f"Error: {e}")
         return "Error in processing", None
@@ -78,4 +92,4 @@ interface = gr.Interface(
     outputs=["text", "audio"],
 )
 
-interface.launch(server_name="0.0.0.0", server_port=8000, debug=True)
+interface.launch(server_name="0.0.0.0",server_port=8000 , debug=True)
