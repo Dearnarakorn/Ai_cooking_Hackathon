@@ -84,11 +84,17 @@ def transcribe_and_speak(audio):
         return "Error in processing TTS", None
     
 
-    
+# Create a Gradio interface
 interface = gr.Interface(
     fn=transcribe_and_speak,
-    inputs=gr.Audio(type="filepath"),
-    outputs=["text", gr.Audio(type="filepath")],
+    inputs=gr.Audio(type="filepath", label="Upload your audio file"),
+    outputs=[
+        gr.Textbox(label="Transcription", lines=5, placeholder="Transcription will appear here..."),
+        gr.Audio(type="filepath", label="Original Audio")
+    ],
+    title="Audio Transcription and Playback",
+    description="Upload an audio file to get its transcription and play the original audio. This is an example interface showcasing Gradio's capabilities.",
+    theme="default"
 )
 
 interface.launch(server_name="0.0.0.0", server_port=8000, debug=True)
