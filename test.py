@@ -65,12 +65,25 @@ def TTS(input_msg):
 def transcribe_and_speak(audio):
     try:
         transcription = ASR(audio)  # Convert speech to text
+    except Exception as e:
+        print(f"Error: {e}")
+        return "Error in processing ASR", None
+    
+    try:
         llm_output = LLM(transcription)  # Get response from language model
+    except Exception as e:
+        print(f"Error: {e}")
+        return "Error in processing LLM", None
+
+
+    try:
         tts_output = TTS(llm_output)  # Convert response to speech
         return transcription, tts_output
     except Exception as e:
         print(f"Error: {e}")
-        return "Error in processing", None
+        return "Error in processing TTS", None
+    
+
     
 interface = gr.Interface(
     fn=transcribe_and_speak,
