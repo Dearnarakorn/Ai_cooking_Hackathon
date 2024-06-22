@@ -15,13 +15,10 @@ pipe = pipeline(
 )
 
 def ASR (intput_path):
-    print(f"ASR Input: {intput_path}")
     # Perform ASR with the created pipe.
     lang = "en"
     result = pipe(intput_path, generate_kwargs={"language": lang, "task": "transcribe"}, batch_size=16)["text"]
-    print(f"ASR Result: {result}")
     return result
-
 
 model_id = "scb10x/llama-3-typhoon-v1.5x-8b-instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
@@ -69,6 +66,7 @@ def TTS (input_msg):
 
 
 def transcribe_and_speak(audio):
+    print(audio)
     try:
         transcription = ASR(audio) #เสียงเป็นข้อความ
         # print(f"Transcription: {transcription}")
