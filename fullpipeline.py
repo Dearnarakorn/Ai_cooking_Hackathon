@@ -67,12 +67,13 @@ def TTS (input_msg):
 
 
 def transcribe_and_speak(audio):
+    transcription = ASR(audio) #เสียงเป็นข้อความ
+    # print(transcription)
+    llm_output = LLM(transcription) #ข้อความเป็นคําตอบ
+    tts_output = TTS(llm_output) #คําตอบเป็นเสียง
+    audio_path = "output.wav"
     try:
-        transcription = ASR(audio) #เสียงเป็นข้อความ
-        # print(transcription)
-        llm_output = LLM(transcription) #ข้อความเป็นคําตอบ
-        tts_output = TTS(llm_output) #คําตอบเป็นเสียง
-        audio_path = "output.wav"
+
         with open(audio_path, "wb") as f:
             f.write(tts_output["audio"])
         return transcription, audio_path
