@@ -75,10 +75,10 @@ def transcribe_and_speak(audio):
         print(f"Error: {e}")
         return "Error in processing LLM", None
 
-
     try:
         tts_output = TTS(llm_output)  # Convert response to speech
-        return transcription, tts_output
+        return llm_output, tts_output
+    
     except Exception as e:
         print(f"Error: {e}")
         return "Error in processing TTS", None
@@ -88,7 +88,7 @@ def transcribe_and_speak(audio):
 interface = gr.Interface(
     fn=transcribe_and_speak,
     inputs=gr.Audio(type="filepath"),
-    outputs=["text", "audio"],
+    outputs=["text", gr.Audio(type="file")],
 )
 
 interface.launch(server_name="0.0.0.0", server_port=8000, debug=True)
