@@ -90,12 +90,11 @@ interface = gr.Interface(
     inputs=gr.Audio(type="filepath", label="Upload your audio file"),
     outputs=[
         gr.Textbox(label="Transcription", lines=10, placeholder="Transcription will appear here..."),
-        gr.components.Audio(type="filepath", label="Output Audio")
+        gr.Audio(type="filepath", label="Output Audio",value="./output.wav")
     ],
     title="A Conversational Exploration of Thailand",
     description="Upload an audio file to get its transcription and play the audio. This is an example interface showcasing Gradio's capabilities.",
-    theme="default",
-    llow_flagging='never'
+    theme="default"
 )
 
 interface.launch(server_name="0.0.0.0", server_port=8000, debug=True)
