@@ -52,6 +52,7 @@ def LLM(input_msg):
         do_sample=True,
         temperature=0.4,
         top_p=0.9,
+        pad_token_id = tokenizer.eos_token_id
     )
     response = outputs[0][input_ids.shape[-1]:]
     result = tokenizer.decode(response, skip_special_tokens=True)
